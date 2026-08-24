@@ -1,4 +1,7 @@
-const API_BASE = 'http://127.0.0.1:8000';
+// ==========================================
+// 1. GLOBAL PLATFORM CONFIGURATIONS
+// ==========================================
+const API_BASE = 'https://onrender.com';
 
 const navHome = document.getElementById('nav-home');
 const navAbout = document.getElementById('nav-about');
@@ -63,14 +66,15 @@ brandHome.addEventListener('click', goHome);
 navAbout.addEventListener('click', (e) => { e.preventDefault(); resetActiveViews(); navAbout.classList.add('active'); pageAbout.classList.remove('hidden'); });
 navContact.addEventListener('click', (e) => { e.preventDefault(); resetActiveViews(); navContact.classList.add('active'); pageContact.classList.remove('hidden'); });
 
-// Handle contact form submission via Formspree API
+// ==========================================
+// 2. CONTACT SYSTEM SUBMISSION MANAGEMENT
+// ==========================================
 contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevents the browser from reloading the page
+    e.preventDefault(); 
     
     const submitBtn = document.getElementById('contact-submit-btn');
     const formData = new FormData(contactForm);
     
-    // Smooth loading visual states
     submitBtn.querySelector('span').innerText = "Sending...";
     submitBtn.disabled = true;
 
@@ -85,7 +89,7 @@ contactForm.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert('Thank you! Your message has been sent directly to Sboniso.');
-            contactForm.reset(); // Clears text fields cleanly
+            contactForm.reset(); 
         } else {
             const data = await response.json();
             throw new Error(data.errors ? data.errors.map(err => err.message).join(', ') : 'Submission failed.');
@@ -94,13 +98,14 @@ contactForm.addEventListener('submit', async (e) => {
         console.error("Formspree Submission Error:", error);
         alert(`Oops! Problem submitting form: ${error.message}`);
     } finally {
-        // Reset buttons back to pristine state
         submitBtn.querySelector('span').innerText = "Send message";
         submitBtn.disabled = false;
     }
 });
 
-
+// ==========================================
+// 3. THEMATIC & LOGICAL ENGINE UNIT CONTROLS
+// ==========================================
 const savedTheme = localStorage.getItem('wp-theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -167,6 +172,9 @@ function isNightNow() {
 
 function clearSky() { skyStage.innerHTML = ''; skyStage.className = 'sky'; }
 
+// ==========================================
+// 4. ADVANCED BACKGROUND ANIMATION MATRIX
+// ==========================================
 function renderSky(main) {
   clearSky();
   const key = (main || 'clear').toLowerCase();
@@ -206,8 +214,8 @@ function renderSky(main) {
     return;
   }
 
-  if (key.includes('thunder')) {
-    skyStage.classList.add('sky--thunderstorm');
+  if (key.includes('thunder') || key.includes('rain') || key.includes('drizzle')) {
+    skyStage.classList.add(key.includes('thunder') ? 'sky--thunderstorm' : 'sky--rain');
     for (let i = 0; i < 70; i++) {
       const drop = document.createElement('div');
       drop.className = 'rain-line';
@@ -217,263 +225,14 @@ function renderSky(main) {
       drop.style.animationDelay = `${Math.random() * 2}s`;
       skyStage.appendChild(drop);
     }
-    const bolt = document.createElement('div');
-    bolt.className = 'bolt-flash';
-    skyStage.appendChild(bolt);
-    return;
-  }
-
-  if (key.includes('rain') || key.includes('drizzle')) {
-    skyStage.classList.add('sky--rain');
-    for (let i = 0; i < 90; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'rain-line';
-      drop.style.left = `${Math.random() * 100}%`;
-      drop.style.height = `${Math.random() * 26 + 16}px`;
-      drop.style.animationDuration = `${Math.random() * 0.4 + 0.55}s`;
-      drop.style.animationDelay = `${Math.random() * 2}s`;
-      skyStage.appendChild(drop);
+    if (key.includes('thunder')) {
+      const bolt = document.createElement('div');
+      bolt.className = 'lightning-bolt';
+      skyStage.appendChild(bolt);
     }
     return;
   }
-
-  if (key.includes('snow')) {
-    skyStage.classList.add('sky--snow');
-    for (let i = 0; i < 60; i++) {
-      const flake = document.createElement('div');
-      flake.className = 'snow-dot';
-      flake.style.left = `${Math.random() * 100}%`;
-      flake.style.width = flake.style.height = `${Math.random() * 4 + 4}px`;
-      flake.style.animationDuration = `${Math.random() * 6 + 6}s`;
-      flake.style.animationDelay = `${Math.random() * 5}s`;
-      skyStage.appendChild(flake);
-    }
-    return;
-  }
-
-  if (key.includes('mist') || key.includes('fog') || key.includes('haze')) {
-    skyStage.classList.add('sky--mist');
-    for (let i = 0; i < 4; i++) {
-      const band = document.createElement('div');
-      band.className = 'mist-band';
-      band.style.top = `${20 + i * 18}%`;
-      band.style.animationDuration = `${18 + i * 4}s`;
-      skyStage.appendChild(band);
-    }
-    return;
-  }
-
-  skyStage.classList.add(night ? 'sky--clear-night' : 'sky--clear-day');
 }
 
-const PACK_RULES = [
-  { group: 'Wear', icon: 'shirt', words: ['jacket', 'coat', 'sweater', 'layer', 'shirt', 'trousers', 'pants', 'shorts', 'dress'] },
-  { group: 'Wear', icon: 'footprints', words: ['shoes', 'boots', 'sandals', 'sneakers', 'trainers'] },
-  { group: 'Carry', icon: 'umbrella', words: ['umbrella', 'raincoat', 'poncho'] },
-  { group: 'Carry', icon: 'glasses', words: ['sunglasses', 'sunscreen', 'hat', 'cap'] },
-  { group: 'Extras', icon: 'backpack', words: [] },
-];
-
-function categorize(item) {
-  const lower = item.toLowerCase();
-  for (const rule of PACK_RULES) {
-    if (rule.words.some((w) => lower.includes(w))) return rule;
-  }
-  return PACK_RULES[PACK_RULES.length - 1];
-}
-
-function renderManifest(list) {
-  manifestGroups.innerHTML = '';
-  const groups = {};
-  list.forEach((item) => {
-    const rule = categorize(item);
-    if (!groups[rule.group]) groups[rule.group] = { icon: rule.icon, items: [] };
-    groups[rule.group].items.push(item);
-  });
-
-  Object.entries(groups).forEach(([groupName, data]) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'manifest-group';
-    const h4 = document.createElement('h4');
-    h4.textContent = groupName;
-    const ul = document.createElement('ul');
-    data.items.forEach((item) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<i data-lucide="${data.icon}"></i><span>${item}</span>`;
-      ul.appendChild(li);
-    });
-    wrap.appendChild(h4);
-    wrap.appendChild(ul);
-    manifestGroups.appendChild(wrap);
-  });
-  initIcons();
-}
-
-function buildDemoForecast(base) {
-  const conditionsCycle = [base.main, 'Clouds', base.main, 'Clear', 'Clouds'];
-  const days = [];
-  for (let i = 0; i < 5; i++) {
-    const drift = Math.round(Math.sin(i * 1.7) * 3);
-    days.push({
-      label: i === 0 ? 'Today' : dayLabel(i),
-      tempC: base.tempC + (i === 0 ? 0 : drift),
-      main: i === 0 ? base.main : conditionsCycle[i],
-      condition: i === 0 ? base.condition : conditionsCycle[i],
-      estimated: i !== 0,
-    });
-  }
-  return days;
-}
-
-function dayLabel(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
-  return d.toLocaleDateString(undefined, { weekday: 'short' });
-}
-
-async function fetchForecast(place, activity, base) {
-  try {
-    const url = `${API_BASE}/api/forecast?place=${encodeURIComponent(place)}&activity=${activity}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('no forecast endpoint');
-    const data = await res.json();
-    if (!Array.isArray(data.forecast) || !data.forecast.length) throw new Error('empty forecast');
-    return data.forecast.map((entry, i) => ({
-      label: i === 0 ? 'Today' : dayLabel(i),
-      tempC: entry.temperature,
-      main: entry.main_condition,
-      condition: entry.condition,
-      estimated: false,
-    }));
-  } catch (err) {
-    return buildDemoForecast(base);
-  }
-}
-
-function renderDayStrip(forecast) {
-  dayStrip.innerHTML = '';
-  forecast.forEach((day, i) => {
-    const tab = document.createElement('button');
-    tab.className = 'day-tab' + (i === activeDayIndex ? ' active' : '');
-    tab.innerHTML = `
-      <span class="day-label">${day.label}</span>
-      <span class="day-temp">${displayTemp(day.tempC)}</span>
-      ${day.estimated ? '<span class="day-sample" title="Estimated"></span>' : ''}
-    `;
-    tab.addEventListener('click', () => { activeDayIndex = i; renderDay(i); });
-    dayStrip.appendChild(tab);
-  });
-}
-
-function renderDay(index) {
-  const day = lastForecast[index];
-  Array.from(dayStrip.children).forEach((el, i) => el.classList.toggle('active', i === index));
-  resultTemp.textContent = displayTemp(day.tempC);
-  resultDesc.textContent = day.condition;
-  resultIcon.setAttribute('data-lucide', conditionToIcon(day.main));
-  initIcons();
-  renderSky(day.main);
-  Array.from(dayStrip.querySelectorAll('.day-tab')).forEach((tab, i) => {
-    tab.querySelector('.day-temp').textContent = displayTemp(lastForecast[i].tempC);
-  });
-}
-
-function renderStats(data) {
-  boardStats.innerHTML = '';
-  const stats = [
-    { key: 'wind_speed', icon: 'wind', suffix: ' km/h', label: 'Wind' },
-    { key: 'humidity', icon: 'droplets', suffix: '%', label: 'Humidity' },
-    { key: 'feels_like', icon: 'thermometer', suffix: '°', label: 'Feels like' },
-  ];
-  stats.forEach((stat) => {
-    if (data[stat.key] === undefined || data[stat.key] === null) return;
-    const chip = document.createElement('div');
-    chip.className = 'stat-chip';
-    chip.innerHTML = `<i data-lucide="${stat.icon}"></i><span>${data[stat.key]}${stat.suffix}</span>`;
-    boardStats.appendChild(chip);
-  });
-  initIcons();
-}
-
-boardPanel.addEventListener('mousemove', (e) => {
-  const rect = boardPanel.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width - 0.5;
-  const y = (e.clientY - rect.top) / rect.height - 0.5;
-  boardPanel.style.transform = `rotateX(${y * -4}deg) rotateY(${x * 4}deg)`;
-});
-boardPanel.addEventListener('mouseleave', () => { boardPanel.style.transform = 'rotateX(0) rotateY(0)'; });
-
-async function runSearch() {
-  const place = cityInput.value.trim();
-  const activity = activityInput.value;
-
-  if (!place) {
-    showToast('Enter a city or place first.');
-    return;
-  }
-
-  searchBtn.disabled = true;
-  searchBtn.querySelector('span').textContent = 'Reading the sky…';
-
-  try {
-    const url = `${API_BASE}/api/weather?place=${encodeURIComponent(place)}&activity=${activity}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || 'Could not fetch that location.');
-
-    resultCity.textContent = data.place;
-    resultDesc.textContent = data.condition;
-    resultIcon.setAttribute('data-lucide', conditionToIcon(data.main_condition));
-    resultTemp.textContent = displayTemp(data.temperature);
-    renderStats(data);
-    renderManifest(data.packing_list || []);
-    renderSky(data.main_condition);
-
-    activeDayIndex = 0;
-    lastForecast = await fetchForecast(place, activity, {
-      tempC: data.temperature,
-      main: data.main_condition,
-      condition: data.condition,
-    });
-    renderDayStrip(lastForecast);
-
-    board.classList.remove('hidden');
-    addRecentChip(data.place || place);
-    initIcons();
-  } catch (err) {
-    showToast(err.message || 'Something went wrong fetching that forecast.');
-  } finally {
-    searchBtn.disabled = false;
-    searchBtn.querySelector('span').textContent = 'Check the sky';
-  }
-}
-
-searchBtn.addEventListener('click', runSearch);
-cityInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') runSearch(); });
-
-locateBtn.addEventListener('click', () => {
-  if (!navigator.geolocation) {
-    showToast('Location isn\u2019t available in this browser.');
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const { latitude, longitude } = position.coords;
-      try {
-        const url = `${API_BASE}/api/weather?lat=${latitude}&lon=${longitude}&activity=${activityInput.value}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (!res.ok) throw new Error('not supported yet');
-        cityInput.value = data.place;
-        runSearch();
-      } catch (err) {
-        showToast('Your backend doesn\u2019t support location lookup yet — add lat/lon handling to enable this.');
-      }
-    },
-    () => showToast('Location access was denied.')
-  );
-});
-
+// Initialise core visuals on load
 syncThemeIcon();
-renderSky('clear');
-initIcons();
