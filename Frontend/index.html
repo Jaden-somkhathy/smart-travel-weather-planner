@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeatherPack — Know Before You Go</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%230B0F16'/%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%23C9974A' stroke-width='2'/%3E%3Cpath d='M32 10 L37 30 L32 54 L27 30 Z' fill='%23C9974A'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23EEF1F4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="sky-stage" class="sky sky--clear-day" aria-hidden="true"></div>
+
+<nav class="navbar">
+  <a href="#" class="brand" id="brand-home">
+    <span class="brand-mark" id="brand-mark">
+      <svg viewBox="0 0 64 64" width="34" height="34">
+        <circle class="mark-ring" cx="32" cy="32" r="27"></circle>
+        <g class="mark-ticks">
+          <line x1="32" y1="7" x2="32" y2="13"></line>
+          <line x1="32" y1="51" x2="32" y2="57"></line>
+          <line x1="7" y1="32" x2="13" y2="32"></line>
+          <line x1="51" y1="32" x2="57" y2="32"></line>
+        </g>
+        <g class="mark-needle">
+          <path d="M32 12 L37.5 32 L32 52 L26.5 32 Z"></path>
+          <circle cx="32" cy="32" r="4.5" class="mark-hub"></circle>
+        </g>
+      </svg>
+    </span>
+    <span class="brand-word">Weather<em>Pack</em></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#" id="nav-home" class="active">Home</a></li>
+    <li><a href="#" id="nav-about">About</a></li>
+    <li><a href="#" id="nav-contact">Contact</a></li>
+    <li><button id="unit-toggle" class="pill-btn" aria-label="Switch temperature unit">°C</button></li>
+    <li><button id="theme-toggle" class="icon-only-btn" aria-label="Toggle theme"><i data-lucide="moon"></i></button></li>
+  </ul>
+</nav>
+
+<main id="page-home" class="page-content">
+
+  <section class="hero">
+    <span class="eyebrow">Smart travel weather</span>
+    <h1>Know before<br>you go.</h1>
+    <p class="lede">Tell us where you're headed. We'll pull the forecast, show you what the sky is actually doing, and pack your bag for it.</p>
+
+    <div class="search-row">
+      <div class="field field--grow">
+        <i data-lucide="map-pin"></i>
+        <input type="text" id="city-input" placeholder="City, town, or landmark" autocomplete="off">
+      </div>
+      <div class="field">
+        <i data-lucide="compass"></i>
+        <select id="activity-input">
+          <option value="casual">Casual sightseeing</option>
+          <option value="business">Business meeting</option>
+          <option value="outdoor">Outdoor / hiking</option>
+        </select>
+      </div>
+      <button id="locate-btn" class="icon-only-btn field-btn" aria-label="Use my location" title="Use my location">
+        <i data-lucide="navigation"></i>
+      </button>
+      <button id="search-btn" class="primary-btn">
+        <span>Check the sky</span>
+        <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+
+    <div id="recent-chips" class="recent-chips"></div>
+  </section>
+
+  <section id="board" class="board hidden">
+    <div class="board-panel" id="board-panel">
+      <div class="board-top">
+        <div class="board-place">
+          <h2 id="result-city">—</h2>
+          <p id="result-desc">—</p>
+        </div>
+        <div class="board-temp">
+          <i data-lucide="cloud-sun" id="result-icon"></i>
+          <span id="result-temp">—</span>
+        </div>
+      </div>
+      <div class="board-stats" id="board-stats"></div>
+    </div>
+
+    <div class="day-strip" id="day-strip"></div>
+
+    <div class="manifest" id="manifest">
+      <span class="eyebrow">The manifest</span>
+      <h3>What to pack</h3>
+      <div class="manifest-groups" id="manifest-groups"></div>
+    </div>
+  </section>
+
+</main>
+
+<section id="page-about" class="page-content hidden">
+  <div class="text-column">
+    <span class="eyebrow">About</span>
+    <h2>What this is</h2>
+    <p>WeatherPack answers one question before a trip: what does the sky look like where you're going, and what should you bring for it. Type in a destination and it pulls the live forecast, then turns that into a packing list based on the conditions and what you're actually doing there , sightseeing, a meeting, or something outdoors.</p>
+    <p>Weather data comes from the OpenWeatherMap API through a small FastAPI backend. The interface in front of it is plain HTML, CSS, and JavaScript no framework, built to stay fast and easy to read.</p>
+    <p>Built by <strong>Sboniso Vilakazi</strong>, a developer who likes shipping small tools that are actually useful on a given day.</p>
+  </div>
+</section>
+
+<section id="page-contact" class="page-content hidden">
+  <div class="text-column">
+    <span class="eyebrow">Contact</span>
+    <h2>Get in touch</h2>
+    <p class="contact-sub">Questions, feedback, or a collaboration idea — send a message.</p>
+    <form id="contact-form" class="contact-form">
+      <input type="text" id="contact-name" placeholder="Your name" required>
+      <input type="email" id="contact-email" placeholder="Your email" required>
+      <textarea id="contact-message" placeholder="Your message" rows="4" required></textarea>
+      <button type="submit" class="primary-btn"><span>Send message</span><i data-lucide="send"></i></button>
+    </form>
+  </div>
+</section>
+
+    <!-- Universal Sticky Footer Layout Elements -->
+    <footer class="app-footer">
+        <p>Follow the developer here:</p>
+        <div class="social-icons">
+            <!-- Sboniso's Instagram Link -->
+            <a href="https://www.instagram.com/sobode02?igsi=bWNncTVqN2toNGx1" target="_blank" aria-label="Instagram" class="icon-btn instagram">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </a>
+            
+            <!-- Sboniso's TikTok Link -->
+            <a href="https://www.tiktok.com/@sobode02?_r=1&_t=ZS-999TV7yie70" target="_blank" aria-label="TikTok" class="icon-btn tiktok">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.05 1.62 4.2 1.21 1.4 3 2.2 4.88 2.33v3.83c-1.39-.07-2.74-.53-3.89-1.32-.73-.5-1.35-1.15-1.81-1.91v7.66c.04 2.44-1.2 4.75-3.31 5.94-2.14 1.23-4.8 1.15-6.87-.21-2.13-1.39-3.24-3.98-2.8-6.51.38-2.22 1.93-4.13 4.1-4.78.33-.1.67-.16 1.02-.19v3.89c-.16.03-.31.08-.47.14-.99.36-1.69 1.34-1.69 2.41.02 1.44 1.16 2.58 2.6 2.57 1.41-.01 2.54-1.14 2.55-2.55V.02z"/></svg>
+            </a>
+            
+            <!-- Sboniso's LinkedIn Link -->
+            <a href="https://www.linkedin.com/in/sboniso-vilakazi-ba1a32416?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" aria-label="LinkedIn" class="icon-btn linkedin">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+        </div>
+        <p class="copyright">&copy; 2026 Sboniso Vilakazi. All rights reserved.</p>
+    </footer>
+
+
+<div id="toast" class="toast"></div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="app.js"></script>
+</body>
+</html>
