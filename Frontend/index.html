@@ -116,14 +116,17 @@
     <span class="eyebrow">Contact</span>
     <h2>Get in touch</h2>
     <p class="contact-sub">Questions, feedback, or a collaboration idea — send a message.</p>
-    <form id="contact-form" class="contact-form">
-      <input type="text" id="contact-name" placeholder="Your name" required>
-      <input type="email" id="contact-email" placeholder="Your email" required>
-      <textarea id="contact-message" placeholder="Your message" rows="4" required></textarea>
-      <button type="submit" class="primary-btn"><span>Send message</span><i data-lucide="send"></i></button>
+    
+    <!-- Connected to your live Formspree link below -->
+    <form id="contact-form" action="https://formspree.io/f/xjybqbdl" method="POST" class="contact-form">
+      <input type="text" id="contact-name" name="name" placeholder="Your name" required>
+      <input type="email" id="contact-email" name="_replyto" placeholder="Your email" required>
+      <textarea id="contact-message" name="message" placeholder="Your message" rows="4" required></textarea>
+      <button type="submit" class="primary-btn" id="contact-submit-btn"><span>Send message</span><i data-lucide="send"></i></button>
     </form>
   </div>
 </section>
+
 
     <!-- Universal Sticky Footer Layout Elements -->
     <footer class="app-footer">

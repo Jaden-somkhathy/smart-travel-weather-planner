@@ -63,11 +63,43 @@ brandHome.addEventListener('click', goHome);
 navAbout.addEventListener('click', (e) => { e.preventDefault(); resetActiveViews(); navAbout.classList.add('active'); pageAbout.classList.remove('hidden'); });
 navContact.addEventListener('click', (e) => { e.preventDefault(); resetActiveViews(); navContact.classList.add('active'); pageContact.classList.remove('hidden'); });
 
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  showToast('Message received — thanks for reaching out.');
-  contactForm.reset();
+// Handle contact form submission via Formspree API
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevents the browser from reloading the page
+    
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const formData = new FormData(contactForm);
+    
+    // Smooth loading visual states
+    submitBtn.querySelector('span').innerText = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(contactForm.action, {
+            method: contactForm.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert('Thank you! Your message has been sent directly to Sboniso.');
+            contactForm.reset(); // Clears text fields cleanly
+        } else {
+            const data = await response.json();
+            throw new Error(data.errors ? data.errors.map(err => err.message).join(', ') : 'Submission failed.');
+        }
+    } catch (error) {
+        console.error("Formspree Submission Error:", error);
+        alert(`Oops! Problem submitting form: ${error.message}`);
+    } finally {
+        // Reset buttons back to pristine state
+        submitBtn.querySelector('span').innerText = "Send message";
+        submitBtn.disabled = false;
+    }
 });
+
 
 const savedTheme = localStorage.getItem('wp-theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
