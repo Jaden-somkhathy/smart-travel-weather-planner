@@ -1,6 +1,3 @@
-// ==========================================
-// 1. GLOBAL PLATFORM CONFIGURATIONS
-// ==========================================
 const API_BASE = 'https://onrender.com';
 
 const navHome = document.getElementById('nav-home');
@@ -66,15 +63,14 @@ brandHome.addEventListener('click', goHome);
 navAbout.addEventListener('click', (e) => { e.preventDefault(); resetActiveViews(); navAbout.classList.add('active'); pageAbout.classList.remove('hidden'); });
 navContact.addEventListener('click', (e) => { e.preventDefault(); resetActiveViews(); navContact.classList.add('active'); pageContact.classList.remove('hidden'); });
 
-// ==========================================
-// 2. CONTACT SYSTEM SUBMISSION MANAGEMENT
-// ==========================================
+// Handle contact form submission via Formspree API
 contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // Prevents the browser from reloading the page
     
     const submitBtn = document.getElementById('contact-submit-btn');
     const formData = new FormData(contactForm);
     
+    // Smooth loading visual states
     submitBtn.querySelector('span').innerText = "Sending...";
     submitBtn.disabled = true;
 
@@ -89,7 +85,7 @@ contactForm.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert('Thank you! Your message has been sent directly to Sboniso.');
-            contactForm.reset(); 
+            contactForm.reset(); // Clears text fields cleanly
         } else {
             const data = await response.json();
             throw new Error(data.errors ? data.errors.map(err => err.message).join(', ') : 'Submission failed.');
@@ -98,14 +94,13 @@ contactForm.addEventListener('submit', async (e) => {
         console.error("Formspree Submission Error:", error);
         alert(`Oops! Problem submitting form: ${error.message}`);
     } finally {
+        // Reset buttons back to pristine state
         submitBtn.querySelector('span').innerText = "Send message";
         submitBtn.disabled = false;
     }
 });
 
-// ==========================================
-// 3. THEMATIC & LOGICAL ENGINE UNIT CONTROLS
-// ==========================================
+
 const savedTheme = localStorage.getItem('wp-theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -172,9 +167,6 @@ function isNightNow() {
 
 function clearSky() { skyStage.innerHTML = ''; skyStage.className = 'sky'; }
 
-// ==========================================
-// 4. ADVANCED BACKGROUND ANIMATION MATRIX
-// ==========================================
 function renderSky(main) {
   clearSky();
   const key = (main || 'clear').toLowerCase();
@@ -214,8 +206,8 @@ function renderSky(main) {
     return;
   }
 
-  if (key.includes('thunder') || key.includes('rain') || key.includes('drizzle')) {
-    skyStage.classList.add(key.includes('thunder') ? 'sky--thunderstorm' : 'sky--rain');
+  if (key.includes('thunder')) {
+    skyStage.classList.add('sky--thunderstorm');
     for (let i = 0; i < 70; i++) {
       const drop = document.createElement('div');
       drop.className = 'rain-line';
@@ -225,11 +217,9 @@ function renderSky(main) {
       drop.style.animationDelay = `${Math.random() * 2}s`;
       skyStage.appendChild(drop);
     }
-    if (key.includes('thunder')) {
-      const bolt = document.createElement('div');
-      bolt.className = 'lightning-bolt';
-      skyStage.appendChild(bolt);
-    }
+    const bolt = document.createElement('div');
+    bolt.className = 'lightning-bolt';
+    skyStage.appendChild(bolt);
     return;
   }
 }
