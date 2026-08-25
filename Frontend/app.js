@@ -1,5 +1,4 @@
-const API_BASE = 'http://127.0.0.1:8000';
-
+const API_BASE = 'https://smart-travel-weather-planner.onrender.com';
 const navHome = document.getElementById('nav-home');
 const navAbout = document.getElementById('nav-about');
 const navContact = document.getElementById('nav-contact');
