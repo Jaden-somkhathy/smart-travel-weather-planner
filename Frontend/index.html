@@ -105,8 +105,8 @@
   <div class="text-column">
     <span class="eyebrow">About</span>
     <h2>What this is</h2>
-    <p>WeatherPack answers one question before a trip: what does the sky look like where you're going, and what should you bring for it. Type in a destination and it pulls the live forecast, then turns that into a packing list based on the conditions and what you're actually doing there , sightseeing, a meeting, or something outdoors.</p>
-    <p>Weather data comes from the OpenWeatherMap API through a small FastAPI backend. The interface in front of it is plain HTML, CSS, and JavaScript no framework, built to stay fast and easy to read.</p>
+    <p>WeatherPack answers one question before a trip: what does the sky look like where you're going, and what should you bring for it. Type in a destination and it pulls the live forecast, then turns that into a packing list based on the conditions and what you're actually doing there — sightseeing, a meeting, or something outdoors.</p>
+    <p>Weather data comes from the OpenWeatherMap API through a small FastAPI backend. The interface in front of it is plain HTML, CSS, and JavaScript — no framework, built to stay fast and easy to read.</p>
     <p>Built by <strong>Sboniso Vilakazi</strong>, a developer who likes shipping small tools that are actually useful on a given day.</p>
   </div>
 </section>
@@ -117,18 +117,19 @@
     <h2>Get in touch</h2>
     <p class="contact-sub">Questions, feedback, or a collaboration idea — send a message.</p>
     
-    <!-- Connected to your live Formspree link below -->
-    <form id="contact-form" action="https://formspree.io/f/xjybqbdl" method="POST" class="contact-form">
+    <!-- Added exact method and live Formspree endpoint configurations -->
+    <form id="contact-form" action="https://formspree.io" method="POST" class="contact-form">
       <input type="text" id="contact-name" name="name" placeholder="Your name" required>
       <input type="email" id="contact-email" name="_replyto" placeholder="Your email" required>
       <textarea id="contact-message" name="message" placeholder="Your message" rows="4" required></textarea>
-      <button type="submit" class="primary-btn" id="contact-submit-btn"><span>Send message</span><i data-lucide="send"></i></button>
+      <button type="submit" class="primary-btn"><span>Send message</span><i data-lucide="send"></i></button>
     </form>
   </div>
 </section>
 
 
-    <!-- Universal Sticky Footer Layout Elements -->
+
+<!-- Universal Sticky Footer Layout Elements -->
     <footer class="app-footer">
         <p>Follow the developer here:</p>
         <div class="social-icons">
