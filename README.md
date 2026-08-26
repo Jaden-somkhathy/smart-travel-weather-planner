@@ -8,7 +8,7 @@
 
 
 
-👉 \*\*\[Open the Smart Travel Weather Planner](https://jaden-somkhathy.github.io/smart-travel-weather-planner/)\*\*
+👉 \*\*\[Open the Smart Travel Weather Planner Live Demo](https://jaden-somkhathy.github.io/smart-travel-weather-planner/)
 
 
 
